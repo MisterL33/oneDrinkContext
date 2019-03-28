@@ -15,37 +15,21 @@ import icon from '../assets/images/onedrink.png'
 import { MonoText } from '../components/StyledText';
 import fond from '../assets/images/fond.jpg';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
-import * as firebase from 'firebase';
-import { StateContext, StateConsumer } from '../Context/stateManager';
-
-firebase.initializeApp(Expo.Constants.manifest.extra.firebase);
-
+import {signInWithFacebook} from "../manager/AccountManager";
+import styles from '../styles/login'
 
 export default class LoginScreen extends React.Component {
+
   constructor(props)
   {
     super(props)
   }
 
-  
-  
 
   componentDidMount = () => {
-    console.log(this.props)
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user != null) {
-        console.log("We are authenticated now!");
-        console.log(user);
-      }
-    });
 
   }
 
-  signInWithFacebook = () => {
-    this.context.actions.facebookLogin(mail, mdp).then((res) => {
-      console.log('ok connecté')
-    })
-  }
  
 
   render() {
@@ -58,26 +42,20 @@ export default class LoginScreen extends React.Component {
               source={icon}
               style={styles.welcomeImage}
             />
-              <StateContext.Consumer>
-                {value =>
-                <Text style={styles.getStartedText}>{value.title}</Text>
-                }
-              
-              </StateContext.Consumer>
-            
+                <Text style={styles.getStartedText}>OneDrink</Text>
           </View>
 
           <View style={styles.getStartedContainer}>
-              <TouchableOpacity style={styles.logButton} onPress={this.signInWithFacebook}>
+              <TouchableOpacity style={styles.logButton} onPress={signInWithFacebook}>
                 <View style={styles.buttonContent}>
                     <FontAwesome style={[styles.atRight, styles.white]} name="facebook-square" size={15} />
                     <Text style={styles.white}>Se connecter avec Facebook</Text>
                 </View>
               </TouchableOpacity>
               
-              <TouchableOpacity style={styles.logButton} onPress={this.signInWithFacebook}>
+              <TouchableOpacity style={styles.logButton} onPress={signInWithFacebook}>
                 <View style={styles.buttonContent}>
-                    <FontAwesome style={[styles.atRight, styles.white]} name="facebook-square" size={15} />
+                    <FontAwesome style={[styles.atRight, styles.white]} name="google-plus" size={15} />
                     <Text style={styles.white}>Se connecter avec Google    </Text>
                 </View>
               </TouchableOpacity>
@@ -94,92 +72,3 @@ export default class LoginScreen extends React.Component {
     );
   }
 }
-
-const WithContext = (LoginScreen) => {
-  return (props) => (
-      <CustomContext.Consumer>
-           {value =>  <LoginScreen {...props} value={value} />}
-      </CustomContext.Consumer>
-  )
-}
-
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-    backgroundColor: 'rgba(0,0,0,.6)',
-    
-  },
-
-  white: {
-    color: 'white',
-  },
-
-  atRight: {
-    position: 'relative',
-    right: 15
-  },
-
-  atRightPlus: {
-    position: 'relative',
-    right: 25
-  },
-
-  contentContainer: {
-    paddingTop: 30,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
-  getStartedContainer: {
-    marginTop: '30%',
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-
-  logButton: {
-    backgroundColor: '#64489b',
-    height: 50,
-    width: '100%',
-    borderRadius: 25,
-    marginTop: '4%',
-  },
-
-  logText: {
-    color: 'white',
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    flex: 1,
-  },
-
-  buttonContent: {
-    width: '100%',
-    height: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center'
-
-  },
-
-  getStartedText: {
-    fontSize: 17,
-    color: 'white',
-    lineHeight: 24,
-    textAlign: 'center',
-    justifyContent: 'center',
-  },
-
-});
