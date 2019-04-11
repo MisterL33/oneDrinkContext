@@ -13,11 +13,19 @@ export default class AuthLoadingScreen extends React.Component {
     }
   
     componentWillMount(){
+      let userData = {}
       firebase.auth().onAuthStateChanged((user) =>{
         if(user)
         {
-          store.dispatch(setUser(user.providerData[0]))
-          this.props.navigation.navigate('App');
+          firebase.database().ref("/users/" + user.providerData[0].uid).once("value").then(async = (snapshot) => {
+            userData.email = snapshot.val().email
+            userData.pseudo = snapshot.val().pseudo
+            userData.largePhoto = snapshot.val().largePhoto
+            userData.providerId = snapshot.val().providerId
+            userData.uid = snapshot.val().uid
+            store.dispatch(setUser(userData))
+            this.props.navigation.navigate('App');
+          })
         }
         else
         {
@@ -32,7 +40,6 @@ export default class AuthLoadingScreen extends React.Component {
             <ActivityIndicator size="large" style={styles.spinner} />
             <StatusBar barStyle="default" />
         </ImageBackground>
-
       );
     }
   }

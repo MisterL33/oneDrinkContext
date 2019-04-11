@@ -3,9 +3,9 @@ import {Image,Platform,ScrollView,StyleSheet,Text,Button,TouchableOpacity,Toucha
 import defaultImage from '../assets/images/onedrink.png';
 import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 import * as firebase from 'firebase';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { ImagePicker, ImageManipulator } from 'expo';
-
+import * as Animatable from 'react-native-animatable';
 
 export class ProfileScreen extends React.Component {
 
@@ -33,12 +33,7 @@ export class ProfileScreen extends React.Component {
   }
 
   componentDidMount(){
-    console.log('avant if')
-    console.log(this.props.user)
-  }
 
-  componentDidUpdate() { // permet d'afficher les prochaines props (ici ce sont les props venant de firebase pour users)
-    //console.log(nextProps.user);
   }
 
   render() {
@@ -48,7 +43,13 @@ export class ProfileScreen extends React.Component {
         {this.props.user != null &&
           <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 35, height:'20%' }}>
             <TouchableHighlight underlayColor={'#64489b'} onPress={() => this.handleEditImage()}>
-              <Image source={{uri: this.props.user.photoURL}} style={{ flex: 1, height: 50, width: 50  }} resizeMode="contain" />
+              <ImageBackground source={{uri: this.props.user.largePhoto}} imageStyle={{borderRadius: 10}} style={{ flex: 1, height: 150, width: 150  }} resizeMode="contain" >
+                <TouchableOpacity>
+                  <Animatable.Text  style={{color: 'white', position: 'absolute', left: 95, top: 100}} easing="ease-in"  animation="bounce" iterationCount={1} direction="alternate">
+                    <MaterialCommunityIcons size={50} name="camera" />
+                  </Animatable.Text>
+                </TouchableOpacity>
+              </ImageBackground> 
             </TouchableHighlight>
           </View>
         }

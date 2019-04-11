@@ -51,7 +51,7 @@ export class HomeScreen extends React.Component {
       <ScrollView style={styles.container}>
         <TouchableOpacity style={styles.logButton} onPress={() => this.props.navigation.navigate('Profile', this.state.user)}>
             <View style={styles.buttonContent}>
-                <Text style={styles.white}>Mon compte {this.props.user != null && this.props.user.displayName} </Text>
+                <Text style={styles.white}>Mon compte {this.props.user != null && this.props.user.pseudo} </Text>
             </View>
         </TouchableOpacity>
       </ScrollView>
