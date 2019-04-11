@@ -3,7 +3,8 @@ import { Image, Platform, ScrollView, StyleSheet, Text, Button, TouchableOpacity
 import HeaderButtons, { HeaderButton, Item } from 'react-navigation-header-buttons';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import styles from '../styles/home';
-
+import store from '../redux/store';
+import { connect } from 'react-redux'
 
 const IoniconsHeaderButton = passMeFurther => (
   <HeaderButton {...passMeFurther} IconComponent={Ionicons} iconSize={23} color="white" />
@@ -14,7 +15,7 @@ const AwesomeIconsHeaderButton = passMeFurther => (
 
 
 
-export default class HomeScreen extends React.Component {
+export class HomeScreen extends React.Component {
   
   static navigationOptions = ({ navigation }) => {
     return {
@@ -31,12 +32,26 @@ export default class HomeScreen extends React.Component {
     super(props)
   }
 
+  state={
+    user: {}
+  }
+
+  componentDidMount(){
+    //console.log(this.props.user)
+  }
+
+
+  componentDidUpdate(){
+    //console.log(this.props.user) // pour l'instant je n'ai pas les infos de l'user dans le component did mount a cause de la nature asynchrone du fetch
+  }
+
+
   render() {
     return (
       <ScrollView style={styles.container}>
-        <TouchableOpacity style={styles.logButton} onPress={() => this.props.navigation.navigate('Profile')}>
+        <TouchableOpacity style={styles.logButton} onPress={() => this.props.navigation.navigate('Profile', this.state.user)}>
             <View style={styles.buttonContent}>
-                <Text style={styles.white}>Mon compte</Text>
+                <Text style={styles.white}>Mon compte {this.props.user != null && this.props.user.displayName} </Text>
             </View>
         </TouchableOpacity>
       </ScrollView>
@@ -45,3 +60,10 @@ export default class HomeScreen extends React.Component {
 }
 
 
+const mapStateToProps = state => ({
+  user: state.user
+})
+
+export default connect(
+  mapStateToProps,
+)(HomeScreen)

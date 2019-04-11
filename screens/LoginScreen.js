@@ -16,7 +16,7 @@ import { MonoText } from '../components/StyledText';
 import fond from '../assets/images/fond.jpg';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import {signInWithFacebook} from "../manager/AccountManager";
-import styles from '../styles/login'
+import styles from '../styles/login';
 
 export default class LoginScreen extends React.Component {
 

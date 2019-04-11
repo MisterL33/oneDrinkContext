@@ -21,13 +21,15 @@ window.loggedIn = loggedIn;
       
         switch (type) {
           case 'success': {
-            await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);  // Set persistent auth state
+            await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);  
             const credential = firebase.auth.FacebookAuthProvider.credential(token);
-            const facebookProfileData = await firebase.auth().signInAndRetrieveDataWithCredential(credential);  // Sign in with Facebook credential
-      
-            // Do something with Facebook profile data
-            // OR you have subscribed to auth state change, authStateChange handler will process the profile data
-            store.dispatch( facebookSignIn(facebookProfileData.user.providerData ))
+            const facebookProfileData = await firebase.auth().signInAndRetrieveDataWithCredential(credential);
+            firebase.database().ref('users/' + facebookProfileData.user.providerData[0].uid).set({
+              pseudo: facebookProfileData.user.providerData[0].displayName,
+              email: facebookProfileData.user.providerData[0].email,
+              profile_picture : facebookProfileData.user.providerData[0].photoURL
+            });
+            store.dispatch( facebookSignIn(facebookProfileData.user.providerData[0]))
             return Promise.resolve({type: 'success'});
           }
           case 'cancel': {
@@ -39,5 +41,6 @@ window.loggedIn = loggedIn;
       export async function checkConnected(){
         let user = await firebase.auth().currentUser()
         console.log(user)
-
       }
+
+
