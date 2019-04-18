@@ -5,6 +5,7 @@ import * as firebase from 'firebase';
 import fond from '../assets/images/fond.jpg';
 import store from '../redux/store';
 import { setUser } from "../redux/actions/index";
+import {updateLocalUser} from '../manager/AccountManager';
 firebase.initializeApp(Expo.Constants.manifest.extra.firebase);
 
 export default class AuthLoadingScreen extends React.Component {
@@ -18,11 +19,7 @@ export default class AuthLoadingScreen extends React.Component {
         if(user)
         {
           firebase.database().ref("/users/" + user.providerData[0].uid).once("value").then(async = (snapshot) => {
-            userData.email = snapshot.val().email
-            userData.pseudo = snapshot.val().pseudo
-            userData.largePhoto = snapshot.val().largePhoto
-            userData.providerId = snapshot.val().providerId
-            userData.uid = snapshot.val().uid
+            userData = updateLocalUser(snapshot.val())
             store.dispatch(setUser(userData))
             this.props.navigation.navigate('App');
           })

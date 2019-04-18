@@ -1,10 +1,37 @@
 import React, { Component } from "react";
 import * as firebase from "firebase";
 import store from "../redux/store/index";
-import { facebookSignIn, loggedIn } from "../redux/actions/index";
+import { loggedIn, setUser } from "../redux/actions/index";
 window.store = store;
-window.facebookSignIn = facebookSignIn;
+window.setUser = setUser;
 window.loggedIn = loggedIn;
+
+
+export async function updateFirebaseUser(user){
+  if(!user.photo1){
+    user.photo1 = ""
+  }
+  if(!user.photo2){
+    user.photo2 = ""
+  }
+  if(!user.photo3){
+    user.photo3 = ""
+  }
+  if(!user.description){
+    user.description = ""
+  }
+  await firebase.database().ref("users/" + user.uid).set({
+    email: user.email,
+    pseudo: user.displayName,
+    photo1: user.photo1,
+    photo2: user.photo2,
+    photo3: user.photo3,
+    description: user.description,
+    providerId: user.providerId,
+    uid: user.uid
+  });
+}
+
 
 export async function signInWithFacebook() {
   const appId = Expo.Constants.manifest.extra.facebook.appId;
@@ -17,34 +44,20 @@ export async function signInWithFacebook() {
 
   switch (type) {
     case "success": {
-      await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-        
-      const credential = firebase.auth.FacebookAuthProvider.credential(token);
-      const facebookProfileData = await firebase.auth().signInAndRetrieveDataWithCredential(credential);
-
+      await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+      const credential = firebase.auth.FacebookAuthProvider.credential(token)
+      const facebookProfileData = await firebase.auth().signInAndRetrieveDataWithCredential(credential)
       let user = facebookProfileData.user.providerData[0];
-      user.largePhoto = user.photoURL + "?type=large";
-      user.description = user;
+      user.photo1 = user.photoURL + "?type=large";
       let userData = {};
-      await firebase.database().ref("/users/" + facebookProfileData.user.providerData[0].uid).once("value").then(async function(snapshot) {
-          if (snapshot.val() == null) {
-            await firebase.database().ref("users/" + facebookProfileData.user.providerData[0].uid).set({
-                email: facebookProfileData.user.providerData[0].email,
-                pseudo: facebookProfileData.user.providerData[0].displayName,
-                largePhoto: user.largePhoto,
-                providerId: facebookProfileData.user.providerData[0].providerId,
-                uid: facebookProfileData.user.providerData[0].uid
-              });
-          } else {
-            userData.email = snapshot.val().email
-            userData.pseudo = snapshot.val().pseudo
-            userData.largePhoto = snapshot.val().largePhoto
-            userData.providerId = snapshot.val().providerId
-            userData.uid = snapshot.val().uid
-          }
-        });
-        console.log(userData)
-      store.dispatch(facebookSignIn(userData));
+      await firebase.database().ref("/users/" + user.uid).once("value").then(async function(snapshot) {
+        if (snapshot.val() == null) {
+          updateFirebaseUser(user)
+        } else {
+          userData = updateLocalUser(snapshot.val())
+        }
+      })
+      store.dispatch(setUser(userData));
       return Promise.resolve({ type: "success" });
     }
     case "cancel": {
@@ -52,3 +65,51 @@ export async function signInWithFacebook() {
     }
   }
 }
+
+
+
+export async function uploadImageAsync(userId, uri, name){
+  const blob = await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      resolve(xhr.response);
+    };
+    xhr.onerror = function(e) {
+      console.log(e);
+      reject(new TypeError('Network request failed'));
+    };
+    xhr.responseType = 'blob';
+    xhr.open('GET', uri, true);
+    xhr.send(null);
+  });
+
+  const ref = firebase
+    .storage()
+    .ref()
+    .child('users/' + userId + '/' + name + '.png');
+  const snapshot = await ref.put(blob);
+
+  blob.close();
+
+  return await snapshot.ref.getDownloadURL();
+}
+
+export function updateLocalUser(user){
+  let userData = {}
+  userData.email = user.email
+  userData.pseudo = user.pseudo
+  userData.photo1 = user.photo1
+  userData.photo2 = user.photo2,
+  userData.photo3 = user.photo3,
+  userData.description = user.description
+  userData.providerId = user.providerId
+  userData.uid = user.uid
+  return userData
+}
+
+export async function getFireBaseUser(userId) {
+  await firebase.database().ref("/users/" + userId).once("value").then(async function(snapshot) {
+    store.dispatch(setUser(snapshot.val()))
+  })
+}
+
