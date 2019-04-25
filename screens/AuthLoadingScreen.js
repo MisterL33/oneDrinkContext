@@ -16,11 +16,9 @@ export default class AuthLoadingScreen extends React.Component {
 
     componentDidMount = async () => {
 
-      let userExist = false
       let userUid = null
       firebase.auth().onAuthStateChanged(async(user) => {
         if(user){
-            userExist = true
             userUid = user.providerData[0].uid
             firebase.database().ref("/users/" + userUid).once("value").then((snapshot) => {
                 store.dispatch(setUser(snapshot.val()))

@@ -1,64 +1,165 @@
-import React from 'react'
-import { Image, Platform, ScrollView, StyleSheet, Text, Button, TouchableOpacity, ImageBackground,View} from 'react-native';
+import React, { Component } from 'react';
+import { Platform, Modal, View, ScrollView, Text, StatusBar, SafeAreaView, ToucheableOpacity, TouchableHighlight, Button } from 'react-native';
+import { LinearGradient } from 'expo';
+import Carousel from 'react-native-snap-carousel';
+import { sliderWidth, itemWidth } from '../styles/SliderEntry';
+import SliderEntry from '../components/SliderEntry';
+import styles, { colors } from '../styles/SliderColors';
 import HeaderButtons, { HeaderButton, Item } from 'react-navigation-header-buttons';
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
-import styles from '../styles/home';
-import store from '../redux/store';
-import { connect } from 'react-redux'
-
-const IoniconsHeaderButton = passMeFurther => (
-  <HeaderButton {...passMeFurther} IconComponent={Ionicons} iconSize={23} color="white" />
-);
+import { FontAwesome } from '@expo/vector-icons';
+import {ENTRIES1} from '../static/entries';
+import modalStyle from '../styles/modal';
+import { connect } from 'react-redux';
+import store from "../redux/store/index";
+import { setModalVisibility } from '../redux/actions';
 const AwesomeIconsHeaderButton = passMeFurther => (
   <HeaderButton {...passMeFurther} IconComponent={FontAwesome} iconSize={23} color="white" />
 );
 
 
+const IS_ANDROID = Platform.OS === 'android';
+const SLIDER_1_FIRST_ITEM = 1;
 
-export class HomeScreen extends React.Component {
-  
-  static navigationOptions = ({ navigation }) => {
-    return {
-      headerRight: (
-        <HeaderButtons HeaderButtonComponent={AwesomeIconsHeaderButton}>
-          <Item title="search" iconName="user" onPress={() => navigation.navigate('Profile')} />
-          <Item title="Profil" onPress={() => navigation.navigate('Profile')} />
-        </HeaderButtons>
-      ),
+
+
+class HomeScreen extends Component {
+
+
+    constructor (props) {
+        super(props);
+        this.state = {
+            slider1ActiveSlide: SLIDER_1_FIRST_ITEM,
+            isModalVisible: false,
+        };
+    }
+
+    static navigationOptions = ({ navigation }) => {
+      return {
+        headerRight: (
+          <HeaderButtons HeaderButtonComponent={AwesomeIconsHeaderButton}>
+            <Item title="search" iconName="user" onPress={() => navigation.navigate('Profile')} />
+            <Item title="Profil" onPress={() => navigation.navigate('Profile')} />
+          </HeaderButtons>
+        ),
+      };
     };
-  };
 
-  constructor(props){
-    super(props)
-  }
+    _renderItem ({item, index}) {
+        return <SliderEntry data={item} even={(index + 1) % 2 === 0} />;
+    }
 
-  state={
-    user: {}
-  }
+    _renderItemWithParallax ({item, index}, parallaxProps) {
+        return (
+            <SliderEntry
+              data={item}
+              even={(index + 1) % 2 === 0}
+              parallax={true}
+              parallaxProps={parallaxProps}
+            />
+        );
+    }
 
+    _renderLightItem ({item, index}) {
+        return <SliderEntry data={item} even={false} />;
+    }
 
-  componentDidUpdate(){
-    //console.log(this.props.user) // pour l'instant je n'ai pas les infos de l'user dans le component did mount a cause de la nature asynchrone du fetch
-  }
+    _renderDarkItem ({item, index}) {
+        return <SliderEntry data={item} even={true} />;
+    }
 
+    tallCarousel (number, title) {
+        const { slider1ActiveSlide } = this.state;
 
-  render() {
-    return (
-      <ScrollView style={styles.container}>
-        <TouchableOpacity style={styles.logButton} onPress={() => this.props.navigation.navigate('Profile', this.state.user)}>
-            <View style={styles.buttonContent}>
-                <Text style={styles.white}>Mon compte {this.props.user != null && this.props.user.pseudo} </Text>
+        return (
+            <View style={styles.exampleContainer}>
+                <Text style={styles.title}>{`${number}`}</Text>
+                <Text style={styles.subtitle}>{title}</Text>
+                <Carousel
+                  ref={c => this._slider1Ref = c}
+                  data={ENTRIES1}
+                  renderItem={this._renderItemWithParallax}
+                  sliderWidth={sliderWidth}
+                  itemWidth={itemWidth}
+                  hasParallaxImages={true}
+                  firstItem={SLIDER_1_FIRST_ITEM}
+                  inactiveSlideScale={0.94}
+                  inactiveSlideOpacity={0.7}
+                  containerCustomStyle={styles.slider}
+                  contentContainerCustomStyle={styles.sliderContentContainer}
+                  loop={true}
+                  loopClonesPerSide={2}
+                  autoplay={true}
+                  autoplayDelay={500}
+                  autoplayInterval={3000}
+                  onSnapToItem={(index) => this.setState({ slider1ActiveSlide: index }) }
+                />
             </View>
-        </TouchableOpacity>
-      </ScrollView>
-    );
-  }
+        );
+    }
+
+    get gradient () {
+        return (
+            <LinearGradient
+              colors={[colors.background1, colors.background2]}
+              startPoint={{ x: 1, y: 0 }}
+              endPoint={{ x: 0, y: 1 }}
+              style={styles.gradient}
+            />
+        );
+    }
+
+    handleCloseModal = () =>{
+      store.dispatch(setModalVisibility(false))
+    }
+
+    render () {
+        const tallCarousel = this.tallCarousel('Salon', 'Avec qui voulez-vous boire ce soir ?');
+        return (
+            <SafeAreaView style={styles.safeArea}>
+                <View style={styles.container}>
+                    <StatusBar
+                      translucent={true}
+                      backgroundColor={'rgba(0, 0, 0, 0.3)'}
+                      barStyle={'light-content'}
+                    />
+                    { this.gradient }
+                    <ScrollView
+                      style={styles.scrollview}
+                      scrollEventThrottle={200}
+                      directionalLockEnabled={true}
+                    >
+                      { tallCarousel }
+
+                      <Modal
+                        animationType="slide"
+                        transparent={false}
+                        visible={store.getState().isModalVisible}
+                        onRequestClose={() => {
+                          Alert.alert('Modal has been closed.');
+                        }}>
+                        <View style={{marginTop: 22}}>
+                          <View>
+                            <Text>Hello World!</Text>
+
+                            <TouchableHighlight
+                              onPress={() => {
+                                this.handleCloseModal(false);
+                              }}>
+                              <Text>Hide Modal</Text>
+                            </TouchableHighlight>
+                          </View>
+                        </View>
+                      </Modal>
+                    </ScrollView>
+                </View>
+            </SafeAreaView>
+        );
+    }
 }
-
-
 const mapStateToProps = state => ({
-  user: state.user
+  isModalVisible: state.isModalVisible
 })
+
 
 export default connect(
   mapStateToProps,

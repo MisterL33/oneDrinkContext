@@ -1,8 +1,9 @@
-import { SET_USER, REDIRECT_PROFILE } from "../constants/action-types";
+import { SET_USER, REDIRECT_PROFILE, SET_MODAL_VISIBILITY } from "../constants/action-types";
 import { LOGGED_IN } from "../constants/action-types";
 const initialState = {
   user: null,
-  logged: false
+  logged: false,
+  isModalVisible: false,
 };
 function rootReducer(state = initialState, action) {
   if (action.type === SET_USER) {
@@ -12,6 +13,12 @@ function rootReducer(state = initialState, action) {
   if (action.type === LOGGED_IN) {
     return Object.assign({}, state, {
       logged: (action.payload)
+    });
+  }
+
+  if (action.type === SET_MODAL_VISIBILITY) {
+    return Object.assign({}, state, {
+      isModalVisible: (action.payload)
     });
   }
 
