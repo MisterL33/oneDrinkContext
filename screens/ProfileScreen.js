@@ -49,6 +49,7 @@ export class ProfileScreen extends React.Component {
 
    logout = () =>{
     firebase.auth().signOut()
+    this.props.navigation.navigate('Auth')
   }
 
   componentWillMount(){

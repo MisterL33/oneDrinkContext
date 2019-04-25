@@ -51,10 +51,11 @@ export async function signInWithFacebook() {
       user.photo1 = user.photoURL + "?type=large";
       let userData = {};
       await firebase.database().ref("/users/" + user.uid).once("value").then(async function(snapshot) {
-        if (snapshot.val() == null) {
-          updateFirebaseUser(user)
-        } else {
-          userData = updateLocalUser(snapshot.val())
+        if (snapshot.val() == null) { // si le user n'existe pas dans firebase databse
+          updateFirebaseUser(user) // on l'insert
+          userData = updateLocalUser(user)
+        } else { // si il existe déjà
+          userData = updateLocalUser(snapshot.val()) // on prends les données de firebase et on créer localement l'user
         }
       })
       store.dispatch(setUser(userData));
@@ -66,7 +67,18 @@ export async function signInWithFacebook() {
   }
 }
 
-
+export function updateLocalUser(user){
+  let userData = {}
+  userData.email = user.email
+  userData.pseudo = user.displayName
+  userData.photo1 = user.photo1
+  userData.photo2 = user.photo2,
+  userData.photo3 = user.photo3,
+  userData.description = user.description
+  userData.providerId = user.providerId
+  userData.uid = user.uid
+  return userData
+}
 
 export async function uploadImageAsync(userId, uri, name){
   const blob = await new Promise((resolve, reject) => {
@@ -94,18 +106,7 @@ export async function uploadImageAsync(userId, uri, name){
   return await snapshot.ref.getDownloadURL();
 }
 
-export function updateLocalUser(user){
-  let userData = {}
-  userData.email = user.email
-  userData.pseudo = user.pseudo
-  userData.photo1 = user.photo1
-  userData.photo2 = user.photo2,
-  userData.photo3 = user.photo3,
-  userData.description = user.description
-  userData.providerId = user.providerId
-  userData.uid = user.uid
-  return userData
-}
+
 
 export async function getFireBaseUser(userId) {
   await firebase.database().ref("/users/" + userId).once("value").then(async function(snapshot) {

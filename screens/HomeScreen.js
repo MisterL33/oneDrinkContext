@@ -36,9 +36,6 @@ export class HomeScreen extends React.Component {
     user: {}
   }
 
-  componentDidMount(){
-  }
-
 
   componentDidUpdate(){
     //console.log(this.props.user) // pour l'instant je n'ai pas les infos de l'user dans le component did mount a cause de la nature asynchrone du fetch

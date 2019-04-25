@@ -17,6 +17,7 @@ import fond from '../assets/images/fond.jpg';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import {signInWithFacebook} from "../manager/AccountManager";
 import styles from '../styles/login';
+import store from '../redux/store';
 
 export default class LoginScreen extends React.Component {
 
@@ -29,6 +30,7 @@ export default class LoginScreen extends React.Component {
   componentDidMount = () => {
 
   }
+
 
  
 

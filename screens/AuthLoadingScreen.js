@@ -12,25 +12,26 @@ export default class AuthLoadingScreen extends React.Component {
     constructor() {
       super();
     }
-  
-    componentWillMount(){
-      let userData = {}
-      firebase.auth().onAuthStateChanged((user) =>{
-        if(user)
-        {
-          firebase.database().ref("/users/" + user.providerData[0].uid).once("value").then(async = (snapshot) => {
-            userData = updateLocalUser(snapshot.val())
-            store.dispatch(setUser(userData))
-            this.props.navigation.navigate('App');
-          })
-        }
-        else
-        {
-          this.props.navigation.navigate('Auth');
-        }
+
+
+    componentDidMount = async () => {
+
+      let userExist = false
+      let userUid = null
+      firebase.auth().onAuthStateChanged(async(user) => {
+        if(user){
+            userExist = true
+            userUid = user.providerData[0].uid
+            firebase.database().ref("/users/" + userUid).once("value").then((snapshot) => {
+                store.dispatch(setUser(snapshot.val()))
+                this.props.navigation.navigate('App')
+              })
+            }else{
+              this.props.navigation.navigate('Auth')
+          }
       })
     }
-  
+
     render() {
       return (
         <ImageBackground source={fond} style={styles.container}>
