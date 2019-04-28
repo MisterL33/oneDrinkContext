@@ -3,6 +3,7 @@ import LoginScreen from '../screens/LoginScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import AuthLoadingScreen from '../screens/AuthLoadingScreen';
+import ChatScreen from '../screens/ChatScreen';
 import {createStackNavigator, createAppContainer, createSwitchNavigator, NavigationActions, StackNavigator, withNavigation} from 'react-navigation';
 import store from "../redux/store/index";
 import { profileRedirect } from "../redux/actions/index";
@@ -21,7 +22,10 @@ const RootStack = createStackNavigator(
       screen: ProfileScreen,
     },
     EditProfile: {
-      screen: EditProfileScreen
+      screen: EditProfileScreen,
+    },
+    Chat: {
+      screen: ChatScreen
     }
   },
   {

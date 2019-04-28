@@ -37,7 +37,6 @@ export default class SliderEntry extends Component {
     }
 
     handleModal = () => {
-        console.log('handleModal')
         store.dispatch(setModalVisibility(true))
     }
 

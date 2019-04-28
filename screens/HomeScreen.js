@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, Modal, View, ScrollView, Text, StatusBar, SafeAreaView, ToucheableOpacity, TouchableHighlight, Button } from 'react-native';
+import { Platform, View, ScrollView, Text, StatusBar, SafeAreaView, ToucheableOpacity, TouchableHighlight, Button } from 'react-native';
 import { LinearGradient } from 'expo';
 import Carousel from 'react-native-snap-carousel';
 import { sliderWidth, itemWidth } from '../styles/SliderEntry';
@@ -12,6 +12,9 @@ import modalStyle from '../styles/modal';
 import { connect } from 'react-redux';
 import store from "../redux/store/index";
 import { setModalVisibility } from '../redux/actions';
+import {SCLAlert,SCLAlertButton} from 'react-native-scl-alert';
+import icon from '../assets/images/onedrink.png';
+
 const AwesomeIconsHeaderButton = passMeFurther => (
   <HeaderButton {...passMeFurther} IconComponent={FontAwesome} iconSize={23} color="white" />
 );
@@ -23,8 +26,6 @@ const SLIDER_1_FIRST_ITEM = 1;
 
 
 class HomeScreen extends Component {
-
-
     constructor (props) {
         super(props);
         this.state = {
@@ -110,6 +111,7 @@ class HomeScreen extends Component {
 
     handleCloseModal = () =>{
       store.dispatch(setModalVisibility(false))
+      this.props.navigation.navigate('Chat')
     }
 
     render () {
@@ -129,27 +131,11 @@ class HomeScreen extends Component {
                       directionalLockEnabled={true}
                     >
                       { tallCarousel }
-
-                      <Modal
-                        animationType="slide"
-                        transparent={false}
-                        visible={store.getState().isModalVisible}
-                        onRequestClose={() => {
-                          Alert.alert('Modal has been closed.');
-                        }}>
-                        <View style={{marginTop: 22}}>
-                          <View>
-                            <Text>Hello World!</Text>
-
-                            <TouchableHighlight
-                              onPress={() => {
-                                this.handleCloseModal(false);
-                              }}>
-                              <Text>Hide Modal</Text>
-                            </TouchableHighlight>
-                          </View>
-                        </View>
-                      </Modal>
+                      <View style={{flex: 1, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center'}}>
+                        <SCLAlert onRequestClose={() =>this.handleCloseModal()} theme="info" show={store.getState().isModalVisible} title="" subtitle="Voulez-vous envoyer une invitation ?">
+                          <SCLAlertButton theme="info" onPress={() => this.handleCloseModal()}>Oui</SCLAlertButton>
+                        </SCLAlert>
+                      </View>
                     </ScrollView>
                 </View>
             </SafeAreaView>
@@ -159,7 +145,6 @@ class HomeScreen extends Component {
 const mapStateToProps = state => ({
   isModalVisible: state.isModalVisible
 })
-
 
 export default connect(
   mapStateToProps,

@@ -1,17 +1,12 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  backdrop: {
-    position: "absolute",
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    opacity: 0,
-    backgroundColor: "black"
-  },
-  content: {
-    flex: 1,
-    justifyContent: "center"
-  }
+    logButton: {
+        backgroundColor: '#64489b',
+        height: 50,
+        width: '100%',
+        borderRadius: 25,
+        marginTop: '4%',
+      },
+    
 });

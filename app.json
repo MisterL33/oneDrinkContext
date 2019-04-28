@@ -1,9 +1,13 @@
 {
   "expo": {
-    "name": "oneDrinkOfficial",
-    "slug": "oneDrinkOfficial",
+    "name": "oneDrink",
+    "slug": "one-drink",
+    "icon": "./assets/images/res/mipmap-xxhdpi/onedrink.png",
     "privacy": "public",
     "sdkVersion": "32.0.0",
+    "android": {
+      "package": "com.onedrink.alphadrink"
+    },
     "platforms": [
       "ios",
       "android"
