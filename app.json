@@ -4,7 +4,7 @@
     "slug": "one-drink",
     "icon": "./assets/images/res/mipmap-xxhdpi/onedrink.png",
     "privacy": "public",
-    "sdkVersion": "32.0.0",
+    "sdkVersion": "35.0.0",
     "android": {
       "package": "com.onedrink.alphadrink"
     },
