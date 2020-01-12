@@ -4,7 +4,9 @@ import ProfileScreen from '../screens/ProfileScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 import ChatScreen from '../screens/ChatScreen';
-import {createStackNavigator, createAppContainer, createSwitchNavigator, NavigationActions, StackNavigator, withNavigation} from 'react-navigation';
+import {createAppContainer, createSwitchNavigator, NavigationActions, StackNavigator, withNavigation} from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack'
+
 import store from "../redux/store/index";
 import { profileRedirect } from "../redux/actions/index";
 window.store = store;

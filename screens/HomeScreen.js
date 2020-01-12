@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, View, ScrollView, Text, StatusBar, SafeAreaView, ToucheableOpacity, TouchableHighlight, Button } from 'react-native';
+import { Platform, View, ScrollView, Text, StatusBar, ToucheableOpacity, TouchableHighlight, Button } from 'react-native';
 import { LinearGradient } from 'expo';
 import Carousel from 'react-native-snap-carousel';
 import { sliderWidth, itemWidth } from '../styles/SliderEntry';
@@ -14,6 +14,7 @@ import store from "../redux/store/index";
 import { setModalVisibility } from '../redux/actions';
 import {SCLAlert,SCLAlertButton} from 'react-native-scl-alert';
 import icon from '../assets/images/onedrink.png';
+import SafeAreaView from 'react-native-safe-area-view';
 
 const AwesomeIconsHeaderButton = passMeFurther => (
   <HeaderButton {...passMeFurther} IconComponent={FontAwesome} iconSize={23} color="white" />

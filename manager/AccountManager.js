@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import * as firebase from "firebase";
+import * as Facebook from 'expo-facebook';
 import store from "../redux/store/index";
 import { loggedIn, setUser } from "../redux/actions/index";
 window.store = store;
@@ -37,7 +38,7 @@ export async function signInWithFacebook() {
   const appId = Expo.Constants.manifest.extra.facebook.appId;
   const permissions = ["public_profile", "email"];
 
-  const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync(
+  const { type, token } = await Facebook.logInWithReadPermissionsAsync(
     appId,
     { permissions }
   );

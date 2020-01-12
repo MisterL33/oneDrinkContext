@@ -1,5 +1,5 @@
 import React from 'react';
-import {View,ActivityIndicator, StatusBar, ImageBackground, ScrollView} from 'react-native';
+import {View,ActivityIndicator, Text, StatusBar, ImageBackground, ScrollView, TouchableOpacity} from 'react-native';
 import styles from '../styles/authloading';
 import * as firebase from 'firebase';
 import fond from '../assets/images/fond.jpg';
@@ -35,6 +35,9 @@ export default class AuthLoadingScreen extends React.Component {
         <ImageBackground source={fond} style={styles.container}>
             <ActivityIndicator size="large" style={styles.spinner} />
             <StatusBar barStyle="default" />
+            <TouchableOpacity style={styles.buttonGo} onPress={this.handleConfirmSearch}>
+              <Text style={styles.Go}>Debug</Text>
+            </TouchableOpacity>
         </ImageBackground>
       );
     }
