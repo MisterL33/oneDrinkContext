@@ -37,7 +37,7 @@ export async function updateFirebaseUser(user){
 export async function signInWithFacebook() {
   const appId = Expo.Constants.manifest.extra.facebook.appId;
   const permissions = ["public_profile", "email"];
-
+  Facebook.initializeAsync(appId)
   const { type, token } = await Facebook.logInWithReadPermissionsAsync(
     appId,
     { permissions }
@@ -47,7 +47,7 @@ export async function signInWithFacebook() {
     case "success": {
       await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
       const credential = firebase.auth.FacebookAuthProvider.credential(token)
-      const facebookProfileData = await firebase.auth().signInAndRetrieveDataWithCredential(credential)
+      const facebookProfileData = await firebase.auth().signInWithCredential(credential)
       let user = facebookProfileData.user.providerData[0];
       user.photo1 = user.photoURL + "?type=large";
       let userData = {};

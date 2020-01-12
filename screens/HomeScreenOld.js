@@ -46,6 +46,59 @@ class HomeScreen extends Component {
       };
     };
 
+    _renderItem ({item, index}) {
+        return <SliderEntry data={item} even={(index + 1) % 2 === 0} />;
+    }
+
+    _renderItemWithParallax ({item, index}, parallaxProps) {
+        return (
+            <SliderEntry
+              data={item}
+              even={(index + 1) % 2 === 0}
+              parallax={true}
+              parallaxProps={parallaxProps}
+            />
+        );
+    }
+
+    _renderLightItem ({item, index}) {
+        return <SliderEntry data={item} even={false} />;
+    }
+
+    _renderDarkItem ({item, index}) {
+        return <SliderEntry data={item} even={true} />;
+    }
+
+    tallCarousel (number, title) {
+        const { slider1ActiveSlide } = this.state;
+
+        return (
+            <View style={styles.exampleContainer}>
+                <Text style={styles.title}>{`${number}`}</Text>
+                <Text style={styles.subtitle}>{title}</Text>
+                <Carousel
+                  ref={c => this._slider1Ref = c}
+                  data={ENTRIES1}
+                  renderItem={this._renderItemWithParallax}
+                  sliderWidth={sliderWidth}
+                  itemWidth={itemWidth}
+                  hasParallaxImages={true}
+                  firstItem={SLIDER_1_FIRST_ITEM}
+                  inactiveSlideScale={0.94}
+                  inactiveSlideOpacity={0.7}
+                  containerCustomStyle={styles.slider}
+                  contentContainerCustomStyle={styles.sliderContentContainer}
+                  loop={true}
+                  loopClonesPerSide={2}
+                  autoplay={true}
+                  autoplayDelay={500}
+                  autoplayInterval={3000}
+                  onSnapToItem={(index) => this.setState({ slider1ActiveSlide: index }) }
+                />
+            </View>
+        );
+    }
+
     get gradient () {
         return (
             <LinearGradient
@@ -57,7 +110,13 @@ class HomeScreen extends Component {
         );
     }
 
+    handleCloseModal = () =>{
+      store.dispatch(setModalVisibility(false))
+      this.props.navigation.navigate('Chat')
+    }
+
     render () {
+        const tallCarousel = this.tallCarousel('Salon', 'Avec qui voulez-vous boire ce soir ?');
         return (
             <SafeAreaView style={styles.safeArea}>
                 <View style={styles.container}>
@@ -69,7 +128,15 @@ class HomeScreen extends Component {
                     { this.gradient }
                     <ScrollView
                       style={styles.scrollview}
+                      scrollEventThrottle={200}
+                      directionalLockEnabled={true}
                     >
+                      { tallCarousel }
+                      <View style={{flex: 1, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center'}}>
+                        <SCLAlert onRequestClose={() =>this.handleCloseModal()} theme="info" show={store.getState().isModalVisible} title="" subtitle="Voulez-vous envoyer une invitation ?">
+                          <SCLAlertButton theme="info" onPress={() => this.handleCloseModal()}>Oui</SCLAlertButton>
+                        </SCLAlert>
+                      </View>
                     </ScrollView>
                 </View>
             </SafeAreaView>

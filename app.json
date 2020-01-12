@@ -4,7 +4,19 @@
     "slug": "one-drink",
     "icon": "./assets/images/res/mipmap-xxhdpi/onedrink.png",
     "privacy": "public",
-    "sdkVersion": "35.0.0",
+    "sdkVersion": "36.0.0",
+    "extra": {
+      "firebase": {
+        "apiKey": "AIzaSyDl9eRUt4LMtg0Gtok9DHAeD2Rp5isEmL8",
+        "authDomain": "onedrinkreact.firebaseapp.com",
+        "databaseURL": "https://onedrinkreact.firebaseio.com",
+        "projectId": "onedrinkreact",
+        "storageBucket": "onedrinkreact.appspot.com",
+      },
+      "facebook": {
+        "appId": "974962599365690"
+      }
+    },
     "android": {
       "package": "com.onedrink.alphadrink"
     },
@@ -12,7 +24,6 @@
       "ios",
       "android"
     ],
-
     "version": "1.0.0",
     "orientation": "portrait",
     "updates": {
