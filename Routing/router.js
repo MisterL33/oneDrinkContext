@@ -4,6 +4,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 import ChatScreen from '../screens/ChatScreen';
+import RegisterScreen from '../screens/RegisterScreen';
 import {createAppContainer, createSwitchNavigator, NavigationActions, StackNavigator, withNavigation} from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack'
 
@@ -19,6 +20,7 @@ const RootStack = createStackNavigator(
   {
     Home: {
       screen: HomeScreen,
+      navigationOptions: { headerShown: false }
     },
     Profile: {
       screen: ProfileScreen,
@@ -28,6 +30,9 @@ const RootStack = createStackNavigator(
     },
     Chat: {
       screen: ChatScreen
+    },
+    Register: {
+      screen: RegisterScreen,
     }
   },
   {

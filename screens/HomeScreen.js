@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import { Platform, View, ScrollView, Text, StatusBar, ToucheableOpacity, TouchableHighlight, Button } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import Carousel from 'react-native-snap-carousel';
-import { sliderWidth, itemWidth } from '../styles/SliderEntry';
-import SliderEntry from '../components/SliderEntry';
-import styles, { colors } from '../styles/SliderColors';
 import {HeaderButtons, Item, HeaderButton } from 'react-navigation-header-buttons';
 import { FontAwesome } from '@expo/vector-icons';
-import {ENTRIES1} from '../static/entries';
 import modalStyle from '../styles/modal';
+import styles, { colors } from '../styles/SliderColors';
 import { connect } from 'react-redux';
 import store from "../redux/store/index";
 import { setModalVisibility } from '../redux/actions';
@@ -22,15 +18,12 @@ const AwesomeIconsHeaderButton = passMeFurther => (
 
 
 const IS_ANDROID = Platform.OS === 'android';
-const SLIDER_1_FIRST_ITEM = 1;
-
 
 
 class HomeScreen extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            slider1ActiveSlide: SLIDER_1_FIRST_ITEM,
             isModalVisible: false,
         };
     }

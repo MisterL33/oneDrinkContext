@@ -4,9 +4,7 @@ export default StyleSheet.create({
       flex: 1,
       width: '100%',
       height: '100%',
-      resizeMode: 'cover',
       backgroundColor: 'rgba(0,0,0,.6)',
-      
     },
   
     white: {
@@ -24,7 +22,7 @@ export default StyleSheet.create({
     },
   
     contentContainer: {
-      paddingTop: 30,
+      paddingTop: "35%",
     },
     welcomeContainer: {
       alignItems: 'center',
@@ -39,14 +37,14 @@ export default StyleSheet.create({
       marginLeft: -10,
     },
     getStartedContainer: {
-      marginTop: '30%',
+      marginTop: '15%',
       alignItems: 'center',
       marginHorizontal: 50,
     },
   
     logButton: {
       backgroundColor: '#64489b',
-      height: 50,
+      height: 60,
       width: '100%',
       borderRadius: 25,
       marginTop: '4%',

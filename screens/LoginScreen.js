@@ -12,32 +12,43 @@ import {
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import icon from '../assets/images/onedrink.png'
-import { MonoText } from '../components/StyledText';
-import fond from '../assets/images/fond.jpg';
+import fond from '../assets/images/fond4.jpg';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import {signInWithFacebook} from "../manager/AccountManager";
 import styles from '../styles/login';
 import store from '../redux/store';
+import {Dimensions} from 'react-native';
 
 export default class LoginScreen extends React.Component {
+
+  static navigationOptions = {
+    headerShown: false 
+  }
 
   constructor(props)
   {
     super(props)
   }
 
-
-  componentDidMount = () => {
-
+  state={
+    width: null,
+    height: null
   }
 
 
+  componentDidMount = () => {
+  }
+
+
+  register = () => {
+    this.props.navigation.navigate('Register')
+  }
  
 
   render() {
     return (
 
-    <ImageBackground source={fond} style={styles.container}>
+    <ImageBackground source={fond} imageStyle={{resizeMode: "cover", width:"150%", marginLeft:"0%"}} style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
             <Image
@@ -62,7 +73,7 @@ export default class LoginScreen extends React.Component {
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.logButton} onPress={this.signInWithFacebook}>
+              <TouchableOpacity style={styles.logButton} onPress={this.register}>
                 <View style={styles.buttonContent}>
                     <FontAwesome style={[styles.atRight, styles.white]} name="user" size={15} />
                     <Text style={styles.white}>         Créer un compte           </Text>
