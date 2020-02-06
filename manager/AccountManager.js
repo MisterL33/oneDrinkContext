@@ -3,6 +3,7 @@ import * as firebase from "firebase";
 import * as Facebook from 'expo-facebook';
 import store from "../redux/store/index";
 import { loggedIn, setUser } from "../redux/actions/index";
+import RegisterScreen from "../screens/RegisterScreen"
 window.store = store;
 window.setUser = setUser;
 window.loggedIn = loggedIn;
@@ -33,6 +34,15 @@ export async function updateFirebaseUser(user){
   });
 }
 
+export async function SignInWithClassic(userMail, userPassword){
+
+  if(userMail == '' || userPassword == ''){
+    alert("Missing data")
+  } else {
+    firebase.auth().createUserWithEmailAndPassword(userMail,userPassword)
+    alert("Register sucess")
+  }
+}
 
 export async function signInWithFacebook() {
   const appId = Expo.Constants.manifest.extra.facebook.appId;

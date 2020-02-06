@@ -4,12 +4,14 @@ import {
   ImageBackground,
   Dimensions,
   StatusBar,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  TouchableOpacity
 } from "react-native";
 import { Block, Checkbox, Text, theme } from "galio-framework";
 import fond from '../assets/images/fond4.jpg';
 import { Button, Icon, Input } from "../components";
 import { Images, argonTheme } from "../constants";
+import {SignInWithClassic} from "../manager/AccountManager";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -17,6 +19,16 @@ class Register extends React.Component {
   static navigationOptions = {
     title: 'Inscription',
   }; 
+
+  constructor(props){
+    super(props)
+  }
+
+  state={
+    userMail: '',
+    userPassword: '',
+  }
+
   render() {
     return (
 
@@ -83,6 +95,7 @@ class Register extends React.Component {
                       <Input
                         borderless
                         placeholder="Email"
+                        onChangeText={(text) => this.setState({userMail: text})}
                         iconContent={
                           <Icon
                             size={16}
@@ -99,6 +112,7 @@ class Register extends React.Component {
                         password
                         borderless
                         placeholder="Password"
+                        onChangeText={(text) => this.setState({userPassword: text})}
                         iconContent={
                           <Icon
                             size={16}
@@ -139,7 +153,9 @@ class Register extends React.Component {
                       </Button>
                     </Block>
                     <Block middle>
-                      <Button color="primary" style={styles.createButton}>
+                      <Button color="primary" 
+                      style={styles.createButton}
+                      onPress={() => SignInWithClassic(this.state.userMail, this.state.userPassword)}>
                         <Text bold size={14} color={argonTheme.COLORS.WHITE}>
                           CREATE ACCOUNT
                         </Text>
