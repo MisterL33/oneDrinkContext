@@ -3,7 +3,7 @@ import * as firebase from "firebase";
 import * as Facebook from 'expo-facebook';
 import store from "../redux/store/index";
 import { loggedIn, setUser } from "../redux/actions/index";
-import RegisterScreen from "../screens/RegisterScreen"
+
 window.store = store;
 window.setUser = setUser;
 window.loggedIn = loggedIn;

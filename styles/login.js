@@ -30,8 +30,8 @@ export default StyleSheet.create({
       marginBottom: 20,
     },
     welcomeImage: {
-      width: 100,
-      height: 80,
+      width: 200,
+      height: 160,
       resizeMode: 'contain',
       marginTop: 3,
       marginLeft: -10,
@@ -71,5 +71,10 @@ export default StyleSheet.create({
       lineHeight: 24,
       textAlign: 'center',
       justifyContent: 'center',
+    },
+
+    loginView: {
+      marginLeft: 20,
+      marginRight: 20,
     },
   })

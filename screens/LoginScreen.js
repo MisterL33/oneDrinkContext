@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ImageBackground,
   View,
+  TextInput,
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import icon from '../assets/images/onedrink.png'
@@ -57,6 +58,21 @@ export default class LoginScreen extends React.Component {
             />
                 <Text style={styles.getStartedText}>OneDrink</Text>
           </View>
+          <View style={styles.loginView}>
+            <TextInput
+              style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10}}
+              placeholder="Mail"
+            />
+            <TextInput
+              style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+              placeholder="Password"
+            />
+            <TouchableOpacity style={styles.logButton} onPress={this.register}>
+                <View style={styles.buttonContent}>
+                    <Text style={styles.white}>         LogIn           </Text>
+                </View>
+              </TouchableOpacity>
+          </View>
 
           <View style={styles.getStartedContainer}>
               <TouchableOpacity style={styles.logButton} onPress={signInWithFacebook}>
@@ -73,12 +89,11 @@ export default class LoginScreen extends React.Component {
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.logButton} onPress={this.register}>
-                <View style={styles.buttonContent}>
-                    <FontAwesome style={[styles.atRight, styles.white]} name="user" size={15} />
-                    <Text style={styles.white}>         Créer un compte           </Text>
-                </View>
-              </TouchableOpacity>
+              <Button 
+                title="create account"
+                onPress={this.register}
+                color="#fff"
+              />
           </View>
         </ScrollView>
       </ImageBackground>
